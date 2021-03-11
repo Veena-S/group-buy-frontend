@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useLocalStorage, deleteFromStorage } from '@rehooks/local-storage';
 import {
   GroupBuyContext, loadListings, setTotalQuantityOrdered as setTotalQuantityOrderedAction,
+  sortListingsByEndDateAction, sortAndFilterListingsByCreatedDate,
 } from '../../store.jsx';
 import CategoriesContainer from './CategoriesContainer.jsx';
 import EndingSoonContainer from './EndingSoonContainer.jsx';
@@ -36,10 +37,12 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (endingSoonListings.length === 0) {
+    if ( // endingSoonListings.length === 0 ||
+      (endingSoonListings.length !== store.listings.length)) {
       setEndingSoonListings(store.listings);
     }
-    if (latestListings.length === 0) {
+    if ( // latestListings.length === 0 ||
+      (latestListings.length !== store.sortedListingsByCreatedDate.length)) {
       setLatestListings(store.sortedListingsByCreatedDate);
     }
   });

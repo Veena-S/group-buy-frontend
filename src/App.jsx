@@ -33,7 +33,7 @@ function App() {
           <Route path="/MyPurchases" component={MainMyPurchasesPage} />
           <Route path="/viewProgress/:listingId/" component={CampaignProgress} />
           <Route path="/editListing/:listingId" component={EditListing} />
-          <Route path="/delete/:listingId/" component={HomePage} />
+          {/* <Route path="/delete/:listingId/" component={HomePage} /> */}
           <Route path="/error" component={NotSignedInErrorPage} />
         </Switch>
       </Router>

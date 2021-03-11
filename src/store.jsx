@@ -329,8 +329,10 @@ export function GroupBuyProvider({ children }) {
 
 // hiiii
 
-export function loadListings(dispatch, setAllCategories, setBtnArray) {
-  axios.get(`${BACKEND_URL}/listings`).then((result) => {
+export function loadListings(dispatch, setAllCategories, setBtnArray, setFilter = true) {
+  console.log('loadListings');
+  return axios.get(`${BACKEND_URL}/listings`).then((result) => {
+    console.log(result.data.listings);
     dispatch(loadListingsAction(result.data.listings));
     dispatch(sortListingsByEndDateAction());
     dispatch(sortAndFilterListingsByCreatedDate());
@@ -339,10 +341,12 @@ export function loadListings(dispatch, setAllCategories, setBtnArray) {
     writeStorage('categories', result.data.categories);
     writeStorage('listingStatus', result.data.listingStatus);
     // to do: for delivery modes also
+    if (setFilter) {
     // To set all the categories in the buttons
-    setAllCategories(result.data.categories);
-    const allBtnsState = result.data.categories.map((_) => false);
-    setBtnArray([true, ...allBtnsState]);
+      setAllCategories(result.data.categories);
+      const allBtnsState = result.data.categories.map((_) => false);
+      setBtnArray([true, ...allBtnsState]);
+    }
   });
 }
 
@@ -410,5 +414,17 @@ export function getAllPurchasesAssociatedWUser(userName) {
     .catch((error) => {
       console.log(error);
       window.location = '/error';
+    });
+}
+
+export function deleteListing(dispatch, listingId) {
+  // Delete the listing
+  return axios.delete(`${BACKEND_URL}/listing/${listingId}/delete`).then((result) =>
+  {
+    console.log('Delete Status: ', result.data);
+    return loadListings(dispatch, null, null, false);
+  })
+    .catch((error) => {
+      console.log(error);
     });
 }

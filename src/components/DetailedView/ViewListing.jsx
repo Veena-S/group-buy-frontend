@@ -4,7 +4,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useLocalStorage } from '@rehooks/local-storage';
 import { useParams } from 'react-router';
 import {
-  GroupBuyContext, setDisplayListingMode, LISTING_VIEW_MODES, selectListingAction, selectListing,
+  GroupBuyContext, setDisplayListingMode, LISTING_VIEW_MODES,
+  selectListingAction, selectListing, deleteListing,
 } from '../../store.jsx';
 import DetailedListingView from './DetailedListingView.jsx';
 import QuantityPicker from './QuantityPicker.jsx';
@@ -67,9 +68,11 @@ export default function ViewListing() {
     }
   }, [loggedInUserId]);
 
-  // const handleDelete = () => {
-  //   console.log('Delete');
-  // };
+  const handleDelete = () => {
+    // Delete the listing
+    deleteListing(dispatch, listingId);
+    selectListing(dispatch, listingId);
+  };
 
   const handleDisplayePerMode = () => {
     const rowClasses = 'row mt-3 ml-3';
@@ -99,11 +102,11 @@ export default function ViewListing() {
                 <span className="btn btn-sm  btn-warning">Edit Listing</span>
               </LinkContainer>
             </div>
-            {/* <div className={`${colClasses} mb-1 `}>
-              <LinkContainer to={`/delete/${listingId}`} onClick={handleDelete}>
-                <span className="btn btn-sm  btn-warning">Delete Listing</span>
+            <div className={`${colClasses} mb-1 `}>
+              <LinkContainer to="/" onClick={handleDelete}>
+                <span className="btn btn-sm btn-warning">Delete Listing</span>
               </LinkContainer>
-            </div> */}
+            </div>
             <div className={`${colClasses} mb-1 `}>
               <LinkContainer to={`/viewProgress/${listingId}`}>
                 <span className="btn btn-sm btn-warning">View Progress</span>
